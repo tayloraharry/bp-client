@@ -1,0 +1,15 @@
+{
+  "production": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-bpscreener-production-6adb9-authRole",
+      "UnauthRoleArn": "arn:aws:iam::176369746616:role/amplify-bpscreener-production-6adb9-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::176369746616:role/amplify-bpscreener-production-6adb9-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-bpscreener-production-6adb9-deployment",
+      "UnauthRoleName": "amplify-bpscreener-production-6adb9-unauthRole",
+      "StackName": "amplify-bpscreener-production-6adb9",
+      "StackId": "arn:aws:cloudformation:us-east-1:176369746616:stack/amplify-bpscreener-production-6adb9/4f923c40-693d-11ef-9572-12e57bde44bd",
+      "AmplifyAppId": "d3ig8tc0zwl0rb"
+    }
+  }
+}
