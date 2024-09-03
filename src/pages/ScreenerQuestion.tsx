@@ -1,5 +1,5 @@
 import { ArrowBack } from "@mui/icons-material";
-import { Button, Grid2, IconButton, Stack, Typography } from "@mui/material";
+import { Button, Grid, IconButton, Stack, Typography } from "@mui/material";
 import { isNumber } from "lodash";
 import { useNavigate } from "react-router-dom";
 import { IScreenerResponseValue } from "../api/screener/screener.types";
@@ -18,7 +18,6 @@ export default function ScreenerQuestion() {
     lastQuestion,
     setResponse,
     goToNextQuestion,
-
     goToPreviousQuestion,
   } = useCurrentScreener();
   const navigate = useNavigate();
@@ -36,15 +35,31 @@ export default function ScreenerQuestion() {
   const handleSubmit = async () => navigate("/results");
 
   return (
-    <Grid2
+    <Grid
       container
-      pt={2}
-      columns={24}
       justifyContent="center"
       alignItems="center"
-      display="flex"
+      sx={{
+        minHeight: "100vh", // Ensures the content is centered vertically
+        overflowY: "auto",  // Allows vertical overflow
+        padding: 2,
+        boxSizing: "border-box",
+      }}
     >
-      <Grid2 size={{ xs: 21, sm: 18 }} maxWidth={500}>
+      <Grid
+        item
+        xs={12}
+        sm={10}
+        md={8}
+        lg={6}
+        sx={{
+          maxWidth: 500,
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+        }}
+      >
         <Stack
           flexDirection="row"
           position="relative"
@@ -68,12 +83,15 @@ export default function ScreenerQuestion() {
             {screener?.content?.display_name}
           </Typography>
         </Stack>
+
         <ScreenerProgress />
+
         <Stack
-          key={questionIndex}
-          className={`${
-            questionDirection === "previous" ? "slide-in-left" : "slide-in"
+          key={questionIndex + questionDirection}
+          className={`${''
+            // questionDirection === "previous" ? "slide-in-left" : "slide-in"
           }`}
+          sx={{ overflowY: "auto", flexGrow: 1 }}  // Allows vertical overflow
         >
           <Stack spacing={2} mt={2} mb={1}>
             <Typography variant="body1">
@@ -85,12 +103,14 @@ export default function ScreenerQuestion() {
             </Typography>
           </Stack>
         </Stack>
+
         <ScreenerAnswers
           key={currentAnswer}
           selectedValue={currentAnswer}
           onChange={handleResponse}
           options={screener?.content?.sections[0]?.answers || []}
         />
+
         {lastQuestion ? (
           <Stack pt={0.5} direction="row">
             <Button
@@ -105,7 +125,7 @@ export default function ScreenerQuestion() {
             </Button>
           </Stack>
         ) : null}
-      </Grid2>
-    </Grid2>
+      </Grid>
+    </Grid>
   );
 }

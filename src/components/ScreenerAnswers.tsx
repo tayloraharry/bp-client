@@ -18,21 +18,20 @@ const ScreenerAnswers: React.FC<IScreenerAnswersProps> = ({
   onChange,
   selectedValue,
 }) => {
-  const { lastQuestion, currentAnswer, questionDirection, question } =
-    useCurrentScreener();
-
-  const handleSelection = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const selection = parseFloat(event.target.value) as IScreenerResponseValue;
-
-    onChange(selection);
-  };
+  const {
+    questionIndex,
+    goToNextQuestion,
+    lastQuestion,
+    currentAnswer,
+    questionDirection,
+    question,
+  } = useCurrentScreener();
 
   return (
     <RadioGroup
       sx={{ width: "100%", my: 2 }}
-      key={question?.question_id}
-      value={currentAnswer}
-      onChange={handleSelection}
+      key={`${question?.question_id}-${questionIndex + 1}`}
+        value={currentAnswer}
     >
       {options.map((option, index) => (
         <FormControlLabel
@@ -45,6 +44,13 @@ const ScreenerAnswers: React.FC<IScreenerAnswersProps> = ({
             width: "100%",
             border: "0.75px solid",
             mx: 0,
+          }}
+          onClick={() => {
+            if (option.value === currentAnswer && !lastQuestion) {
+              goToNextQuestion();
+            } else {
+              onChange(option.value);
+            }
           }}
           className={`${
             lastQuestion && isNumber(currentAnswer)

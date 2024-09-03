@@ -1,17 +1,18 @@
 import { isNumber } from "lodash";
 import React, {
-  createContext,
-  ReactNode,
-  useContext,
-  useMemo,
-  useState,
+    createContext,
+    ReactNode,
+    useContext,
+    useMemo,
+    useState,
 } from "react";
+import { useNavigate } from "react-router-dom";
 import { useScreener } from "../api/screener/screener.hooks";
 import {
-  IScreener,
-  IScreenerQuestion,
-  IScreenerResponse,
-  IScreenerResponseValue,
+    IScreener,
+    IScreenerQuestion,
+    IScreenerResponse,
+    IScreenerResponseValue,
 } from "../api/screener/screener.types";
 
 type QuestionDirection = "previous" | "next";
@@ -53,6 +54,8 @@ export const ScreenerProvider: React.FC<ScreenerProviderProps> = ({
   const [questionIndex, setQuestionIndex] = useState(0);
   const [responses, setResponses] =
     useState<IScreenerResponse[]>(initialResponses);
+  const navigate = useNavigate();
+
   const questionCount = useMemo(
     () => screener?.content?.sections[0]?.questions.length || 0,
     [screener]
@@ -88,11 +91,13 @@ export const ScreenerProvider: React.FC<ScreenerProviderProps> = ({
   const goToNextQuestion = () => {
     setQuestionDirection("next");
     setQuestionIndex((prevIndex) => prevIndex + 1);
+    navigate('screener/question-' + (questionIndex + 2))
   };
 
   const goToPreviousQuestion = () => {
     setQuestionDirection("previous");
     setQuestionIndex((prevIndex) => Math.max(prevIndex - 1, 0));
+    navigate('screener/question-' + Math.max(questionIndex - 2, 1))
   };
 
   const setResponse = (questionId: string, answer?: IScreenerResponseValue) => {

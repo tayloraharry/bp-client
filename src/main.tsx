@@ -6,40 +6,64 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import * as React from "react";
 import * as ReactDOM from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  BrowserRouter,
+  createBrowserRouter,
+  Outlet,
+  RouterProvider,
+  useNavigate,
+} from "react-router-dom";
 import { ScreenerProvider } from "./context/Screener.context";
 import "./index.css";
+import StartScreen from "./pages/Start";
 import ScreenerQuestion from "./pages/ScreenerQuestion";
 import ScreenerResults from "./pages/ScreenerResults";
 import theme from "./theme";
 
+const Layout = () => (
+  <ThemeProvider theme={theme}>
+    <CssBaseline />
+    <QueryClientProvider client={queryClient}>
+      <ScreenerProvider>
+        <Outlet />
+      </ScreenerProvider>
+    </QueryClientProvider>
+  </ThemeProvider>
+);
+
 const router = createBrowserRouter([
   {
-    path: "/screener",
-    element: <ScreenerQuestion />,
-  },
-  {
-    path: "/results",
-    element: <ScreenerResults />,
-  },
-
-  {
-    path: "*",
-    element: <ScreenerQuestion />,
+    element: <Layout />,
+    children: [
+      {
+        path: "/",
+        element: <StartScreen />,
+      },
+      {
+        path: "/screener/:question",
+        element: <ScreenerQuestion />,
+      },
+      {
+        path: "/results",
+        element: <ScreenerResults />,
+      },
+      {
+        path: "*",
+        element: <StartScreen />,
+      },
+    ],
   },
 ]);
 
 const queryClient = new QueryClient();
 
+const App = () => {
+
+  return <RouterProvider router={router} />;
+};
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <QueryClientProvider client={queryClient}>
-        <ScreenerProvider>
-          <RouterProvider router={router} />
-        </ScreenerProvider>
-      </QueryClientProvider>
-    </ThemeProvider>
+    <App />
   </React.StrictMode>
 );
