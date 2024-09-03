@@ -67,7 +67,7 @@ export default function RadioButtonsGroup() {
           </IconButton>
 
           <Typography variant="body1" textAlign="center" alignSelf="center">
-            {screener?.content.display_name}
+            {screener?.content?.display_name}
           </Typography>
         </Stack>
         <ScreenerProgress />
@@ -79,7 +79,7 @@ export default function RadioButtonsGroup() {
         >
           <Stack spacing={2} mt={2} mb={1}>
             <Typography variant="body1">
-              {screener?.content.sections[0].title}
+              {screener?.content?.sections[0]?.title}
             </Typography>
 
             <Typography variant="body1" key={questionIndex}>
@@ -91,7 +91,7 @@ export default function RadioButtonsGroup() {
           key={currentAnswer}
           selectedValue={currentAnswer}
           onChange={handleResponse}
-          options={screener?.content.sections[0].answers || []}
+          options={screener?.content?.sections[0]?.answers || []}
         />
         {lastQuestion ? (
           <Stack pt={0.5} direction="row">

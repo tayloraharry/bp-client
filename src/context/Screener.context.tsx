@@ -47,19 +47,19 @@ export const ScreenerProvider: React.FC<ScreenerProviderProps> = ({
   children,
   initialResponses = [],
 }) => {
-  const { data: screener } = useScreener("123");
+  const { data: screener } = useScreener("12");
   const [questionDirection, setQuestionDirection] =
     useState<QuestionDirection>("next");
   const [questionIndex, setQuestionIndex] = useState(0);
   const [responses, setResponses] =
     useState<IScreenerResponse[]>(initialResponses);
   const questionCount = useMemo(
-    () => screener?.content.sections[0].questions.length || 0,
+    () => screener?.content?.sections[0]?.questions.length || 0,
     [screener]
   );
 
   const question = useMemo(
-    () => screener?.content.sections[0].questions[questionIndex],
+    () => screener?.content?.sections[0]?.questions[questionIndex],
     [questionIndex, screener]
   );
 
