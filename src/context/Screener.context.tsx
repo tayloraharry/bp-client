@@ -19,6 +19,7 @@ import {
 type QuestionDirection = "previous" | "next";
 
 interface ScreenerContextType {
+  isLoading: boolean;
   question?: IScreenerQuestion;
   questionIndex: number;
   firstQuestion: boolean;
@@ -49,7 +50,7 @@ export const ScreenerProvider: React.FC<ScreenerProviderProps> = ({
   children,
   initialResponses = [],
 }) => {
-  const { data: screener } = useScreener("12");
+  const { data: screener, isLoading } = useScreener();
   const [questionDirection, setQuestionDirection] =
     useState<QuestionDirection>("next");
   const [questionIndex, setQuestionIndex] = useState(0);
@@ -87,7 +88,7 @@ export const ScreenerProvider: React.FC<ScreenerProviderProps> = ({
   );
 
   const progress = useMemo(
-    () => Math.round((100 * (questionIndex + 1)) / questionCount + 0),
+    () => Math.round((100 * responses.filter(r => isNumber(r.value)).length) / questionCount + 0),
     [questionCount, responses, questionIndex]
   );
 
@@ -126,8 +127,8 @@ export const ScreenerProvider: React.FC<ScreenerProviderProps> = ({
     const pathParts = location.pathname.split("/");
     const questionPart = pathParts[pathParts.length - 1].split("-")[1];
     const newIndex = parseFloat(questionPart);
-console.log(newIndex)
-    if (!isNaN(newIndex) && newIndex !== questionNumber ) {
+
+    if (!isNaN(newIndex) && newIndex !== questionNumber) {
       setQuestionIndex(Math.max(0, newIndex - 1));
     }
   }, [location]);
@@ -135,6 +136,7 @@ console.log(newIndex)
   return (
     <ScreenerContext.Provider
       value={{
+        isLoading,
         screener,
         question,
         responses,

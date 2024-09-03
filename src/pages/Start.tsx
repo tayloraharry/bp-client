@@ -16,15 +16,15 @@ const StartScreen: React.FC = () => {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        minHeight: "100vh",
+        minHeight: "calc(100vh - 64px)",
         textAlign: "center",
       }}
     >
       <Box sx={{ mb: 2 }}>
-        <Typography variant="h4" component="h1" gutterBottom>
+        <Typography variant="h5" component="h1" gutterBottom>
           Blueprint Diagnostic Screener (BDS)
         </Typography>
-        <Typography variant="h6" component="p" color="textSecondary">
+        <Typography variant="body1"color="textSecondary">
           Assess and monitor cross-cutting symptoms efficiently over the past two weeks.
         </Typography>
       </Box>

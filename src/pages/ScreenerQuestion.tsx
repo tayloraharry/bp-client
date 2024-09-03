@@ -1,14 +1,24 @@
 import { ArrowBack } from "@mui/icons-material";
-import { Button, Grid, IconButton, Stack, Typography } from "@mui/material";
+import {
+  Button,
+  Grid,
+  IconButton,
+  Stack,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import { isNumber } from "lodash";
 import { useNavigate } from "react-router-dom";
 import { IScreenerResponseValue } from "../api/screener/screener.types";
 import ScreenerAnswers from "../components/ScreenerAnswers";
 import ScreenerProgress from "../components/ScreenerProgress";
+import Header from "../components/ui/Header";
+import LoadingIndicator from "../components/ui/LoadingIndicator";
 import { useCurrentScreener } from "../context/Screener.context";
 
 export default function ScreenerQuestion() {
   const {
+    isLoading,
     screener,
     questionIndex,
     questionDirection,
@@ -34,98 +44,76 @@ export default function ScreenerQuestion() {
 
   const handleSubmit = async () => navigate("/results");
 
+  if (isLoading) return <LoadingIndicator />;
+
   return (
-    <Grid
-      container
-      justifyContent="center"
-      alignItems="center"
-      sx={{
-        minHeight: "100vh", // Ensures the content is centered vertically
-        overflowY: "auto",  // Allows vertical overflow
-        padding: 2,
-        boxSizing: "border-box",
-      }}
-    >
+    <>
+      <Header />
       <Grid
-        item
-        xs={12}
-        sm={10}
-        md={8}
-        lg={6}
+        container
+        justifyContent="center"
         sx={{
-          maxWidth: 500,
-          width: "100%",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
+          overflowY: "auto",
+          px: 4,
+          boxSizing: "border-box",
         }}
       >
-        <Stack
-          flexDirection="row"
-          position="relative"
-          alignItems="center"
-          justifyContent="center"
-          mb={2}
-        >
-          <IconButton
-            sx={{
-              opacity: firstQuestion ? 0 : 1,
-              position: "absolute",
-              left: 0,
-            }}
-            disabled={firstQuestion}
-            onClick={goToPreviousQuestion}
-          >
-            <ArrowBack fontSize="inherit" />
-          </IconButton>
+        <Stack mt={4}>
+          <Stack  mb={2} flexDirection='row' alignItems='center' justifyContent='space-between'>
 
-          <Typography variant="body1" textAlign="center" alignSelf="center">
-            {screener?.content?.display_name}
-          </Typography>
-        </Stack>
+            <IconButton
+              sx={{
+                opacity: firstQuestion ? 0 : 1,
+                alignSelf: "flex-start",
 
-        <ScreenerProgress />
-
-        <Stack
-          key={questionIndex + questionDirection}
-          className={`${''
-            // questionDirection === "previous" ? "slide-in-left" : "slide-in"
-          }`}
-          sx={{ overflowY: "auto", flexGrow: 1 }}  // Allows vertical overflow
-        >
-          <Stack spacing={2} mt={2} mb={1}>
-            <Typography variant="body1">
-              {screener?.content?.sections[0]?.title}
-            </Typography>
-
-            <Typography variant="body1" key={questionIndex}>
-              {question?.title}
-            </Typography>
+                color: "text.secondary",
+              }}
+              disabled={firstQuestion}
+              onClick={goToPreviousQuestion}
+            >
+              <ArrowBack fontSize="inherit" />
+            </IconButton>
+            <ScreenerProgress />
           </Stack>
-        </Stack>
+          
 
-        <ScreenerAnswers
-          key={currentAnswer}
-          selectedValue={currentAnswer}
-          onChange={handleResponse}
-          options={screener?.content?.sections[0]?.answers || []}
-        />
+          <Stack
+            key={questionIndex + questionDirection}
+            className={`${"slide-in-question"}`}
+            sx={{ overflowY: "auto", flexGrow: 1, mb: 2, maxWidth: 474 }}
+          >
+            <Stack spacing={2} mt={2} mb={1} px={0.5}>
+              <Typography variant="body1">
+                {screener?.content?.sections[0]?.title}
+              </Typography>
 
-        
-          <Stack pt={0.5} direction="row">
+              <Typography variant="body1" key={questionIndex}>
+                {question?.title}
+              </Typography>
+            </Stack>
+          </Stack>
+
+          <ScreenerAnswers
+            key={currentAnswer}
+            selectedValue={currentAnswer}
+            onChange={handleResponse}
+            options={screener?.content?.sections[0]?.answers || []}
+          />
+
+          <Stack direction="row">
             <Button
               fullWidth
               variant="contained"
+              size="large"
               onClick={handleSubmit}
+              sx={{ opacity: lastQuestion ? 1 : 0 }}
               disabled={!lastQuestion || !isNumber(currentAnswer)}
             >
-              <Typography textTransform="none">
-                {lastQuestion ? "Submit" : "Next"}
-              </Typography>
+              <Typography textTransform="none">Submit</Typography>
             </Button>
           </Stack>
-        
+        </Stack>
       </Grid>
-    </Grid>
+    </>
   );
 }

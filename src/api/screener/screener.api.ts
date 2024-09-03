@@ -1,12 +1,11 @@
 import api from "../api.client";
 import { Domain } from "../domain/domain.types";
 import {
-  IScreener,
-  IScreenerAnswer,
-  IScreenerResponse,
+    IScreener,
+    IScreenerResponse
 } from "./screener.types";
 
-async function getScreener(screenerId: string): Promise<IScreener> {
+async function getScreener(): Promise<IScreener> {
   const response = await api.get<IScreener>(`screener`);
 
   return response.data;

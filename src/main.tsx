@@ -2,31 +2,29 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-import { CssBaseline, ThemeProvider } from "@mui/material";
+import { CssBaseline } from "@mui/material";
 import * as React from "react";
 import * as ReactDOM from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "react-query";
-import {
-  createBrowserRouter,
-  Outlet,
-  RouterProvider
-} from "react-router-dom";
+import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import { ScreenerProvider } from "./context/Screener.context";
+import { CustomThemeProvider } from "./context/Theme.context";
 import "./index.css";
 import ScreenerQuestion from "./pages/ScreenerQuestion";
 import ScreenerResults from "./pages/ScreenerResults";
 import StartScreen from "./pages/Start";
-import theme from "./theme";
+import ThemeToggleButton from "./components/ui/ThemeToggle";
+import Header from "./components/ui/Header";
 
 const Layout = () => (
-  <ThemeProvider theme={theme}>
+  <CustomThemeProvider>
     <CssBaseline />
     <QueryClientProvider client={queryClient}>
       <ScreenerProvider>
         <Outlet />
       </ScreenerProvider>
     </QueryClientProvider>
-  </ThemeProvider>
+  </CustomThemeProvider>
 );
 
 const router = createBrowserRouter([
@@ -56,7 +54,6 @@ const router = createBrowserRouter([
 const queryClient = new QueryClient();
 
 const App = () => {
-
   return <RouterProvider router={router} />;
 };
 
