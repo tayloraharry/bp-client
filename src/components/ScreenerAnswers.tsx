@@ -1,11 +1,11 @@
 import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { isNumber } from "lodash";
+import React from "react";
 import {
   IScreenerAnswer,
   IScreenerResponseValue,
 } from "../api/screener/screener.types";
 import { useCurrentScreener } from "../context/Screener.context";
-import { isNumber, noop } from "lodash";
 
 interface IScreenerAnswersProps {
   options: IScreenerAnswer[];
@@ -31,7 +31,7 @@ const ScreenerAnswers: React.FC<IScreenerAnswersProps> = ({
     <RadioGroup
       sx={{ width: "100%", my: 2 }}
       key={`${question?.question_id}-${questionIndex + 1}`}
-        value={currentAnswer}
+      value={currentAnswer}
     >
       {options.map((option, index) => (
         <FormControlLabel
@@ -46,19 +46,15 @@ const ScreenerAnswers: React.FC<IScreenerAnswersProps> = ({
             mx: 0,
           }}
           onClick={() => {
-            if (option.value === currentAnswer && !lastQuestion) {
-              goToNextQuestion();
-            } else {
+            if (option.value !== currentAnswer || lastQuestion) {
               onChange(option.value);
+       
+            } else {
+              goToNextQuestion();
             }
+           
           }}
-          className={`${
-            lastQuestion && isNumber(currentAnswer)
-              ? ""
-              : questionDirection === "previous"
-              ? "slide-in-left"
-              : "slide-in"
-          }`}
+          className={isNumber(currentAnswer)  && lastQuestion ? '' : "slide-in"}
           value={option.value}
           control={<Radio color="primary" size="small" />}
           label={option.title}

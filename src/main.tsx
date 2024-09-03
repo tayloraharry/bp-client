@@ -7,17 +7,15 @@ import * as React from "react";
 import * as ReactDOM from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "react-query";
 import {
-  BrowserRouter,
   createBrowserRouter,
   Outlet,
-  RouterProvider,
-  useNavigate,
+  RouterProvider
 } from "react-router-dom";
 import { ScreenerProvider } from "./context/Screener.context";
 import "./index.css";
-import StartScreen from "./pages/Start";
 import ScreenerQuestion from "./pages/ScreenerQuestion";
 import ScreenerResults from "./pages/ScreenerResults";
+import StartScreen from "./pages/Start";
 import theme from "./theme";
 
 const Layout = () => (

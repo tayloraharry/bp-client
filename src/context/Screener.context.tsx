@@ -1,18 +1,19 @@
 import { isNumber } from "lodash";
 import React, {
-    createContext,
-    ReactNode,
-    useContext,
-    useMemo,
-    useState,
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
 } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useScreener } from "../api/screener/screener.hooks";
 import {
-    IScreener,
-    IScreenerQuestion,
-    IScreenerResponse,
-    IScreenerResponseValue,
+  IScreener,
+  IScreenerQuestion,
+  IScreenerResponse,
+  IScreenerResponseValue,
 } from "../api/screener/screener.types";
 
 type QuestionDirection = "previous" | "next";
@@ -55,6 +56,8 @@ export const ScreenerProvider: React.FC<ScreenerProviderProps> = ({
   const [responses, setResponses] =
     useState<IScreenerResponse[]>(initialResponses);
   const navigate = useNavigate();
+  const location = useLocation(); // Detect route changes
+  const questionNumber = useMemo(() => questionIndex + 1, [questionIndex]);
 
   const questionCount = useMemo(
     () => screener?.content?.sections[0]?.questions.length || 0,
@@ -89,15 +92,13 @@ export const ScreenerProvider: React.FC<ScreenerProviderProps> = ({
   );
 
   const goToNextQuestion = () => {
+    navigate("screener/question-" + (questionNumber + 1));
     setQuestionDirection("next");
-    setQuestionIndex((prevIndex) => prevIndex + 1);
-    navigate('screener/question-' + (questionIndex + 2))
   };
 
   const goToPreviousQuestion = () => {
+    navigate("screener/question-" + Math.max(questionNumber - 1, 1));
     setQuestionDirection("previous");
-    setQuestionIndex((prevIndex) => Math.max(prevIndex - 1, 0));
-    navigate('screener/question-' + Math.max(questionIndex - 2, 1))
   };
 
   const setResponse = (questionId: string, answer?: IScreenerResponseValue) => {
@@ -120,6 +121,16 @@ export const ScreenerProvider: React.FC<ScreenerProviderProps> = ({
       return [...prevResponses, { question_id: questionId, value: answer }];
     });
   };
+
+  useEffect(() => {
+    const pathParts = location.pathname.split("/");
+    const questionPart = pathParts[pathParts.length - 1].split("-")[1];
+    const newIndex = parseFloat(questionPart);
+console.log(newIndex)
+    if (!isNaN(newIndex) && newIndex !== questionNumber ) {
+      setQuestionIndex(Math.max(0, newIndex - 1));
+    }
+  }, [location]);
 
   return (
     <ScreenerContext.Provider
