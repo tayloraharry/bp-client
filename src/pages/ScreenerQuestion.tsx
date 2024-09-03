@@ -111,20 +111,20 @@ export default function ScreenerQuestion() {
           options={screener?.content?.sections[0]?.answers || []}
         />
 
-        {lastQuestion ? (
+        
           <Stack pt={0.5} direction="row">
             <Button
               fullWidth
               variant="contained"
               onClick={handleSubmit}
-              disabled={!isNumber(currentAnswer)}
+              disabled={!lastQuestion || !isNumber(currentAnswer)}
             >
               <Typography textTransform="none">
                 {lastQuestion ? "Submit" : "Next"}
               </Typography>
             </Button>
           </Stack>
-        ) : null}
+        
       </Grid>
     </Grid>
   );
