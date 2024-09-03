@@ -7,7 +7,7 @@ You can access the live version of the application [here](https://main.d3ig8tc0z
 
 To run the code locally, follow these steps:
 
-1. **Clone the repository**:
+1. **Clone the  front-end repository**:
 ```
   $ git clone https://github.com/tayloraharry/bp-client.git
 ```
@@ -28,6 +28,34 @@ $ yarn dev //or npm run dev
 
  The application should now be running locally at [ http://localhost:3000]( http://localhost:3000)
 
+
+
+1. **Clone the  back-end repository**:
+```
+  $ git clone https://github.com/tayloraharry/bp-server.git
+```
+2. **Navigate to the project directory**:
+```
+$ cd bp-server
+```
+
+3. **Install dependencies**:
+```
+$ yarn //or npm install
+```
+
+3. **Add a .env file in the root of the project with the following variable defined **:
+```
+$ MONGO_DB_URI=[INSERT CONNECTION STRING HERE]
+```
+
+4. **Start the development serve**:
+```
+$ sls offline start
+```
+4. **Open your browser**
+
+ The application should now be running locally at [ http://localhost:3000]( http://localhost:3000)
 
 ### Problem ###
 The exercise simulates a real-world scenario where engineers build both front-end and back-end components of a feature. The challenge involves creating a system for administering standardized clinical assessments via a web interface and automating the assignment of assessments based on patient responses.
