@@ -1,13 +1,13 @@
-import { Button, Grid2, IconButton, Stack, Typography } from "@mui/material";
 import { ArrowBack } from "@mui/icons-material";
+import { Button, Grid2, IconButton, Stack, Typography } from "@mui/material";
 import { isNumber } from "lodash";
 import { useNavigate } from "react-router-dom";
 import { IScreenerResponseValue } from "../api/screener/screener.types";
-import ScreenerProgress from "../components/ScreenerProgress";
 import ScreenerAnswers from "../components/ScreenerAnswers";
+import ScreenerProgress from "../components/ScreenerProgress";
 import { useCurrentScreener } from "../context/Screener.context";
 
-export default function RadioButtonsGroup() {
+export default function ScreenerQuestion() {
   const {
     screener,
     questionIndex,
@@ -15,9 +15,7 @@ export default function RadioButtonsGroup() {
     question,
     firstQuestion,
     currentAnswer,
-    responses,
     lastQuestion,
-    progress,
     setResponse,
     goToNextQuestion,
 
